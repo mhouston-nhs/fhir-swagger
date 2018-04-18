@@ -4,8 +4,11 @@ var Converter = require('./lib/conformance-to-swagger.js');
 module.exports = function(options, callback) {
   callback = callback || function(err) {if (err) throw err};
   var headers = {};
+  var jwt = options.jwt;
   var auth = options.authorization;
-  if (auth) {
+  if (jwt) {
+    headers.Authorization = 'Bearer ' + options.jwt;
+  } else if (auth) {
     var authString = auth.username + ':' + auth.password;
     authString = new Buffer(authString).toString('base64');
     headers.Authorization = 'Basic ' + authString;
